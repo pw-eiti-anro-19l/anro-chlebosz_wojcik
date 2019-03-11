@@ -1,5 +1,6 @@
 <launch>
-    <rosparam command="load" file="$(find lab1)/params.yaml"/>
     <node pkg="turtlesim" name="sim" type="turtlesim_node"/>
-    <node pkg="lab1" name="scripts" type="teleop.py"/>
+    <node pkg="lab1" name="teleop" type="teleop.py">
+        <rosparam command="load" file="$(find lab1)/params.yaml"/>
+    </node>
 </launch>

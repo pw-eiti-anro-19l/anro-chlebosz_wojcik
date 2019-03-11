@@ -23,10 +23,10 @@ def teleop():
     pub = rospy.Publisher('turtle1/cmd_vel', Twist, queue_size=10)
     rospy.init_node('teleop', anonymous=True)
 
-    forward = rospy.get_param("forward")
-    ret = rospy.get_param("return")
-    rotate_left = rospy.get_param("rotate_l")
-    rotate_right = rospy.get_param("rotate_r")
+    forward = rospy.get_param("teleop/forward")
+    ret = rospy.get_param("teleop/return")
+    rotate_left = rospy.get_param("teleop/rotate_l")
+    rotate_right = rospy.get_param("teleop/rotate_r")
 
     while True:
         ch = getch()
