@@ -1,0 +1,16 @@
+background_b: 255
+background_g: 86
+background_r: 69
+forward: w
+return: s
+rotate_l: a
+rotate_r: d
+rosdistro: 'melodic
+
+  '
+roslaunch:
+  uris: {host_adrian__39061: 'http://Adrian:39061/'}
+rosversion: '1.14.3
+
+  '
+run_id: fe67cbd0-428e-11e9-b2f2-f859715fbbdf
