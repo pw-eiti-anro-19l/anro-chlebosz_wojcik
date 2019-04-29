@@ -96,7 +96,7 @@ def forward_kinematics(data):
 	marker.pose.orientation.y = quaternion[1]
 	marker.pose.orientation.z = quaternion[2]
 	marker.pose.orientation.w = quaternion[3]
-	marker.color.a = 0.7
+	marker.color.a = 0.0
 	marker.color.r = 0.0
 	marker.color.g = 1.0
 	marker.color.b = 0.0
