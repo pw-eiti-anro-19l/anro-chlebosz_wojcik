@@ -1,5 +1,5 @@
 <launch>
-    <param name="robot_description" command="xacro --inorder '$(find lab2)/urdf/movable.urdf'"/>
+    <param name="robot_description" command="xacro --inorder '$(find lab5)/urdf/movable.urdf'"/>
     <param name="use_gui" value="false"/>
     <param name="publish_default_positions" value="true"/>
 
@@ -11,7 +11,7 @@
         <rosparam param="source_list">["jstate"]</rosparam>
     </node>
     <node name="rviz" pkg="rviz" type="rviz" args="-f base_link" required="true"/>
-    <node name="oint" pkg="lab2" type="oint.py"/>
-    <node name="circle" pkg="lab2" type="ocmd.py"/>
-    <node name="ikin" pkg="lab2" type="ikin.py"/>
+    <node name="oint" pkg="lab5" type="oint.py"/>
+    <node name="circle" pkg="lab5" type="ocmd.py"/>
+    <node name="ikin" pkg="lab5" type="ikin.py"/>
 </launch>

@@ -1,0 +1,11 @@
+<launch>
+    <param name="robot_description" command="xacro --inorder '$(find lab4)/urdf/movable.urdf'"/>
+    <param name="use_gui" value="false"/>
+    <param name="publish_default_positions" value="true"/>
+
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher"/>
+    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+    	<rosparam param="source_list">["interpolation"]</rosparam>
+    </node>
+    <node name="rviz" pkg="rviz" type="rviz" args="-f base_link" required="true"/>
+</launch>

@@ -1,6 +1,6 @@
 <launch>
-    <param name="robot_description" command="xacro --inorder '$(find lab2)/urdf/movable.urdf'"/>
+    <param name="robot_description" command="xacro --inorder '$(find lab5)/urdf/movable.urdf'"/>
     <param name="use_gui" value="true"/>
 
-    <node name="non_kdl" pkg="lab2" type="nonkdl_dkin.py" />
+    <node name="non_kdl" pkg="lab5" type="nonkdl_dkin.py" />
 </launch>
