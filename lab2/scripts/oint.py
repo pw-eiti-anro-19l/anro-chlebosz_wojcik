@@ -9,26 +9,32 @@ import math
 
 
 freq = 50
-prev_pos = (0., 0., 0.)
+prev_pos = (0.6, 0., 0.)
 prev_q = (0., 0., 0., 1.)
 path = Path()
 
 
 def handle_interpolation(req):
-    if req.t <= 0:
+    if req.t <= 0.:
         return False
 
-    current_time = 0
+    global prev_pos
+    global prev_q
+    new_pos = (req.x, req.y, req.z)
+    new_q = (req.qx, req.qy, req.qz, req.qw)
+    rate = rospy.Rate(freq)
+
+    current_time = 0.
     frames_number = int(math.ceil(req.t * freq))
 
     for i in range(frames_number+1):
-        x = compute_int(prev_pos[3], new_pos[3], req.t, current_time, req.i)
-        y = compute_int(prev_pos[2], new_pos[2], req.t, current_time, req.i)
-        z = compute_int(prev_pos[1], new_pos[1], req.t, current_time, req.i)
+        x = compute_int(prev_pos[0], new_pos[0], req.t, current_time, req.i)
+        y = compute_int(prev_pos[1], new_pos[1], req.t, current_time, req.i)
+        z = compute_int(prev_pos[2], new_pos[2], req.t, current_time, req.i)
         qx = compute_int(prev_q[0], new_q[0], req.t, current_time, req.i)
         qy = compute_int(prev_q[1], new_q[1], req.t, current_time, req.i)
         qz = compute_int(prev_q[2], new_q[2], req.t, current_time, req.i)
-        qw = compute_int(prev_q[3], new_q[2], req.t, current_time, req.i)
+        qw = compute_int(prev_q[3], new_q[3], req.t, current_time, req.i)
 
         pose = PoseStamped()
         pose.header.stamp = rospy.Time.now()
@@ -45,16 +51,12 @@ def handle_interpolation(req):
         path.header = pose.header
         path.poses.append(pose)
         path_pub.publish(path)
-        current_time = current_time + 1 / freq
+        current_time = current_time + 1.0 / freq
+        rate.sleep()
 
-
-    global prev_pos
-    # global prev_q
-    new_pos = (req.x, req.y, req.z)
-    new_q = (req.qx, req.qy, req.qz, req.qw)
-    rate = rospy.Rate(freq)
-
-    rate.sleep()
+    prev_pos = new_pos
+    prev_q = new_q
+    return True
 
 
 def compute_int(start_j, last_j, time, current_time, i):
@@ -69,17 +71,17 @@ def compute_const(start_j, last_j, time, current_time):
 
 
 def compute_tri(start_j, last_j, time, current_time):
-    h = 2 * float(last_j - start_j) / time
-    ratio = h / (time / 2)
-    if current_time < time / 2:
-        return start_j - current_time**2 * ratio * 2
+    h = 2. * float(last_j - start_j) / time
+    ratio = h / (time / 2.)
+    if current_time < time / 2.:
+        return start_j + current_time**2 * ratio / 2.
     else:
-        return last_j + (time-current_time)**2 * ratio / 2
+        return last_j - (time-current_time)**2 * ratio / 2.
 
 
 if __name__ == "__main__":
     rospy.init_node('oint_srv')
-    pub = rospy.Publisher('ointerpolation', PoseStamped, queue_size=1)
-    path_pub = rospy.Publisher('pathing', Path, queue_size=1)
+    pub = rospy.Publisher('ointerpolation', PoseStamped, queue_size=10)
+    path_pub = rospy.Publisher('pathing', Path, queue_size=10)
     s = rospy.Service('oint', Oint, handle_interpolation)
     rospy.spin()

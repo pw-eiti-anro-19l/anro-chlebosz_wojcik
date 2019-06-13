@@ -9,7 +9,7 @@ def interpolation_client(x, y, z, time, i):
     try:
         interpolation = rospy.ServiceProxy('int', Interpolation)
         resp1 = interpolation(x, y, z, time, i)
-        raise Exception('chcesz zagrac w gre?')
+        return resp1.status
     except rospy.ServiceException, e:
         print "Service call failed: %s"%e
 
@@ -18,6 +18,6 @@ if __name__ == "__main__":
     y = float(sys.argv[2])
     z = float(sys.argv[3])
     time = float(sys.argv[4])
-    i = float(sys.argv[5])
+    i = sys.argv[5]
     print "Requesting interpolation"
-    print interpolation_client(z, y, x, time, i)
+    print interpolation_client(x, y, z, time, i)
